@@ -33,6 +33,7 @@ pub mod keychron;
 pub mod keychron_nape;
 pub mod logitech;
 pub mod logitech_g321;
+pub mod logitech_g435;
 pub mod logitech_g533;
 pub mod logitech_prox2;
 pub mod mchose;

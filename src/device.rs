@@ -226,7 +226,7 @@ struct HidCache {
 /// Devices no driver may send anything to. Logitech G435 (046D:0ACB): its dongle reports the
 /// battery only from bootloader mode, which cuts the audio (issue #10); it has no HID++ channel and
 /// no standard battery usage, so it is skipped outright rather than relying on that.
-const NEVER_TOUCH: [(u16, u16); 2] = [(0x046D, 0x0ACB), (0x046D, 0x0ADF)];
+const NEVER_TOUCH: [(u16, u16); 0] = [];
 
 fn hid_collections(rescan: bool) -> Vec<HidColl> {
     let mut cache = HID_CACHE.lock().unwrap_or_else(|e| e.into_inner());
@@ -255,6 +255,7 @@ pub fn poll_hardware(ids: &[(u16, u16)]) -> Vec<DeviceStatus> {
     let mut ctx = PollContext { colls, ..Default::default() };
     drivers::steelseries::poll(&mut ctx);
     drivers::logitech_g321::poll(&mut ctx);
+    drivers::logitech_g435::poll(&mut ctx);
     drivers::logitech_prox2::poll(&mut ctx);
     drivers::logitech_g533::poll(&mut ctx);
     drivers::logitech::poll(&mut ctx);
@@ -381,6 +382,7 @@ fn poll_with(colls: Vec<HidColl>) -> Vec<DeviceStatus> {
     // Vendor drivers first, generic fallbacks last (same order as the original chain).
     drivers::steelseries::poll(&mut ctx);
     drivers::logitech_g321::poll(&mut ctx);
+    drivers::logitech_g435::poll(&mut ctx);
     drivers::logitech_prox2::poll(&mut ctx);
     drivers::logitech_g533::poll(&mut ctx);
     drivers::logitech::poll(&mut ctx);
